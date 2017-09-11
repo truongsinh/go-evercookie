@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-var handler func(http.ResponseWriter, *http.Request, func(http.ResponseWriter, *http.Request))
-var noop = func(http.ResponseWriter, *http.Request) {}
+var handler func(http.ResponseWriter, *http.Request, func())
+var noop = func() {}
 
 func init() {
 	handler = Evercookie(DefaultConfig())
@@ -49,7 +49,7 @@ func TestPng(t *testing.T) {
 func TestNext(t *testing.T) {
 	r, err := http.NewRequest("GET", "http://smarp.smh.re/somethingelse", nil)
 	isCalled := false
-	f := func(http.ResponseWriter, *http.Request) {
+	f := func() {
 		isCalled = true
 	}
 	if err != nil {
