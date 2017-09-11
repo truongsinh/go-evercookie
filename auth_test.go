@@ -11,11 +11,12 @@ func TestAuthPositive(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	r.Header.Set("Authorization", "Basic NTg5Og==")
+	// Base64 encode of <script>alert(document.domain)</script>:<script>mypassword</script>
+	r.Header.Set("Authorization", "Basic PHNjcmlwdD5hbGVydChkb2N1bWVudC5kb21haW4pPC9zY3JpcHQ+OjxzY3JpcHQ+bXlwYXNzd29yZDwvc2NyaXB0Pg==")
 	w := httptest.NewRecorder()
 	handler(w, r, noop)
 	expectCode(t, w, 200)
-	expectBody(t, w, "589")
+	expectBody(t, w, "&lt;script&gt;alert(document.domain)&lt;/script&gt;")
 }
 
 func TestAuthNegative(t *testing.T) {

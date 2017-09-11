@@ -3,6 +3,8 @@ package evercookie
 import (
 	"io"
 	"net/http"
+
+	"golang.org/x/net/html"
 )
 
 /**
@@ -24,6 +26,6 @@ func cache(w http.ResponseWriter, r *http.Request, cacheCookieName string) {
 	h.Set("Expires", "Tue, 31 Dec 2030 23:30:45 GMT")
 	h.Set("Cache-Control", "private, max-age=630720000")
 
-	io.WriteString(w, c.Value)
+	io.WriteString(w, html.EscapeString(c.Value))
 	return
 }

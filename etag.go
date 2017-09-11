@@ -1,6 +1,7 @@
 package evercookie
 
 import (
+	"html"
 	"io"
 	"net/http"
 )
@@ -18,14 +19,14 @@ func etag(w http.ResponseWriter, r *http.Request, etagCookieName string) {
 	c, err := r.Cookie(etagCookieName)
 	if err != nil || c.Value == "" {
 		ecValue = r.Header.Get("If-None-Match")
-		w.Header().Set("Etag", ecValue)
+		w.Header().Set("Etag", html.EscapeString(ecValue))
 		w.WriteHeader(304)
 		return
 	}
 	ecValue = c.Value
 	if ecValue != "" {
-		w.Header().Set("Etag", ecValue)
-		io.WriteString(w, ecValue)
+		w.Header().Set("Etag", html.EscapeString(ecValue))
+		io.WriteString(w, html.EscapeString(ecValue))
 		return
 	}
 	w.WriteHeader(304)

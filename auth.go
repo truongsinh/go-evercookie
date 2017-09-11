@@ -3,6 +3,8 @@ package evercookie
 import (
 	"bytes"
 	"encoding/base64"
+	"html"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -26,5 +28,5 @@ Start:
 	if len(b) == 0 {
 		goto Unauthorized
 	}
-	w.Write(b[0])
+	io.WriteString(w, html.EscapeString(string(b[0])))
 }
